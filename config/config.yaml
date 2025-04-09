@@ -1,0 +1,55 @@
+embedding_models:
+  bio_wordvec: 
+    model_path: 'trained_models/embeddings/pretrained/bio_wordvec_200.bin'
+    doc_vector_technique: 'average' # Options: [average, max, sum, normal (l2 norm)]
+    embedding_dim: 100
+  glove:
+    model_path: 'trained_models/embeddings/pretrained/glove.6B.100d.txt'
+    embedding_dim: 100
+    vocab_size_limit: 400000
+    context_window: 10
+
+
+
+datasets:
+  medal:
+    name: "medal"
+    data_path: "dataset/medal/pretrain_subset"
+    preprocessed_data_path: "dataset/medal/preprocessed_subset"      
+    num_classes: 22555
+    tokenizer: "Tokenizer_1"
+    use_embeddings: true
+    embedding_path: "/path/to/embedding_file"
+    loss_function: "cross_entropy"
+    max_sequence_length: 256 # maxseq
+    context_window: 30
+
+model_names: ['lstm_and_self_attention']
+
+models:
+  lstm_and_self_attention:
+    hyperparameters: 
+      lstm_units: 2
+      lstm_hidden_dim: 256
+      dropout: 0.3
+    base_params:
+
+    metrics:
+      - "accuracy"
+      - "precision"
+      - "recall"
+    
+# Common training settings
+training:
+  hyperparameters:
+    batch_size: 64
+    learning_rate: 0.009
+  create_embedding_layer: True
+
+  optimizer: 'adam'
+  weight_decay: 0.001
+
+  epochs: 10
+  shuffle: True
+  random_seed: 42
+
